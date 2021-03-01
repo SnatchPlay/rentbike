@@ -3,3 +3,12 @@
 ################################################################################
 
 /Admin/bin/Debug
+*.suo
+/Admin/obj/Debug
+*.csproj
+*.config
+/NP_1/bin/Debug
+/NP_1/obj/Debug
+/User/bin/Debug
+/User/obj/Debug
+*.sln
