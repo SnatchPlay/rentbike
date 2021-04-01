@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NP_1;
-
+using NP_1.Factories;
+using NP_1.RepInterface;
 
 namespace Admin
 {
     class Command
     {
-        public IRepository<Technic> techRepository = new TechRep();
-        public IRepository<Call> callRepository = new CallRep();
-        public IRepository<Place> placeRepository = new PlaceRep();
+        public ITechRep techRepository = FactoryProvider.GetFactory().GetTechRep();
+        public ICallRep callRepository = FactoryProvider.GetFactory().GetCallRep();
+        
+        public IPlaceRep placeRepository = FactoryProvider.GetFactory().GetPlaceRep();
+        //public IRepository<Technic> techRepository = new TechRep();
+        //public IRepository<Call> callRepository = new CallRep();
+        //public IRepository<Place> placeRepository = new PlaceRep();
 
         public void AddCall(string name, string surname, int stag)
         {
@@ -45,14 +50,14 @@ namespace Admin
         {
             
             string str = ""; 
-            str = callRepository.Data[i].ToString();
+            str = callRepository.Data[i].ToString()+"\n";
             return str;
             
         }
         public string AllTech(int i)
         {
             string str = "";
-            str=techRepository.Data[i].ToString();
+            str=techRepository.Data[i].ToString()+"\n";
             return str;
         }
         public void AddPoint(string street) {
@@ -63,9 +68,13 @@ namespace Admin
         public string AllPoints(int i)
         {
             string str="";
-            str = placeRepository.Data[i].ToString();
+            str = placeRepository.Data[i].Write()+"\n";
             return str;
                 
+        }
+        public void DeleteTech(short i)
+        {
+            techRepository.Remove(i);
         }
     }
 }

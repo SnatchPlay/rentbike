@@ -8,7 +8,7 @@ namespace NP_1
 {
     public class Customer:Person
     {
-        private int number;
+		public int number { get; }
 		public Customer(string Name, string SurName, int number):base(Name,SurName)
 		{
 			
@@ -16,7 +16,7 @@ namespace NP_1
 		}
 		public override string ToString()
 		{
-			return $"Customer info:\n{base.ToString()} Phone:{number}\n";
+			return $"{base.ToString()} {number}";
 		}
 		public string getname()
 		{
@@ -26,9 +26,6 @@ namespace NP_1
 		{
 			return SurName;
 		}
-		public int getnumber()
-		{
-			return number;
-		}
+
 	}
 }

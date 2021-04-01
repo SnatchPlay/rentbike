@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NP_1;
+
 
 namespace Admin
 {
@@ -21,7 +23,8 @@ namespace Admin
 				Console.WriteLine("4.Show all call\n");
 				Console.WriteLine("5.Show all tech\n");
 				Console.WriteLine("6.Show all points\n");
-				Console.WriteLine("7.Exit\n") ;
+				Console.WriteLine("7.Delete technic\n");
+				Console.WriteLine("8.Exit\n") ;
 				char user;
 				user = Convert.ToChar(Console.ReadLine());
 				if (user == '1')
@@ -71,6 +74,15 @@ namespace Admin
 						Console.Write(com.AllPoints(i));
 					}
                 }
+				else if (user == '7')
+				{
+					for (int i = 0; i < com.techRepository.Data.Count(); i++)
+					{
+						Console.Write(i+" "+com.AllTech(i));
+					}
+					Console.WriteLine("Position of tech:");
+					com.DeleteTech(Convert.ToInt16( Console.ReadLine()));
+				}
 
 				else
 				{

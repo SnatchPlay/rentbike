@@ -8,9 +8,9 @@ namespace NP_1
 {
     public class Technic:Person
     {
-        private int stag;
-        private int rate;
-        private int cr;
+		public int stag { get; }
+		public int rate { get; set; }
+		public int cr { get; set; }
 		public Technic(string Name, string SurName, int stag, int rate, int cr = 0) : base(Name, SurName)
     {
 	this.stag = stag;
@@ -19,7 +19,7 @@ namespace NP_1
     }
 		public override string ToString()
 		{
-			return $"Tech {base.ToString()} {stag} {rate} {cr}\n";
+			return $"{base.ToString()} {stag} {rate} {cr}";
 		}
 		public string getName()
 		{
@@ -29,31 +29,6 @@ namespace NP_1
 		public string getSurname()
 		{
 			return SurName;
-		}
-
-		public int getstag()
-		{
-			return stag;
-		}
-
-		public int getrate()
-		{
-			return rate;
-		}
-
-		public void setrate(int rate)
-		{
-			this.rate = rate;
-		}
-
-		public void setcr(int cr)
-		{
-			this.cr = cr;
-		}
-
-		public int getcr()
-		{
-			return cr;
 		}
 
 	}

@@ -17,10 +17,6 @@ namespace NP_1
         {
             Data.RemoveAt(ind);
         }
-
-        
-
-
     }
 }
 

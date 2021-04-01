@@ -8,8 +8,8 @@ namespace NP_1
 {
     public class Call : Person
     {
-        private int stag;
-        private int calls;
+        public int stag { get; set; }
+        public int calls { get; set; }
         public Call(string Name, string SurName, int stag, int calls) : base(Name, SurName)
         {
             this.stag = stag;
@@ -17,7 +17,7 @@ namespace NP_1
         }
         public override string ToString()
         {
-            return $"Call {base.ToString()} {stag}\n";
+            return $"{base.ToString()} {stag} {calls}";
         }
 
         public string getName()
@@ -28,21 +28,6 @@ namespace NP_1
         public string getSurname()
         {
             return SurName;
-        }
-
-        public int getstag()
-        {
-            return stag;
-        }
-
-        public int getcalls()
-        {
-            return calls;
-        }
-
-        public void setcall(int calls)
-        {
-            this.calls = calls;
         }
     }
 }

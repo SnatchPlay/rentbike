@@ -8,11 +8,11 @@ namespace NP_1
 {
     public class Place
     {
-        private string street;
-        private int count;
-        private int serialnumb;
-        private int price;
-        private bool available;
+        public string street { get; }
+        public int count { get; }
+        public int serialnumb { get; set; }
+        public int price { get; }
+        public bool available { get; set; }
         public Place(string street, int count=3, int serialnumb=0, int price=50, bool available=true)
         {
             this.street = street;
@@ -21,17 +21,18 @@ namespace NP_1
             this.price = price;
             this.available = available;
         }
-        public string getstreet()
+        public override string ToString()
         {
-            return street;
+            return $"{street} {serialnumb} {price} {available}";
         }
+
         public string Writejustbike()
         {
             return $"Bicycle info:{serialnumb} {price}$ {available}\n";
         }
         public string Write()
         {
-            return $"Street:{street}\n Count of avalaible:{count} \n Bicycle info:{serialnumb} {price}$ {available}\n";
+            return $"Street:{street}\n  Bicycle info:{serialnumb} {price}$ {available}\n";
 
 
         }
@@ -42,29 +43,5 @@ namespace NP_1
         //        return Writejustbike();
         //    }
         //}
-        public bool avall()
-        {
-            return available;
-        }
-        public int pri()
-        {
-            return price;
-        }
-        public int sr()
-        {
-            return serialnumb;
-        }
-        public void seta(bool a)
-        {
-            this.available = a;
-        }
-        public void setsr(int a)
-        {
-            this.serialnumb = a;
-        }
-        public int getcount()
-        {
-            return count;
-        }
     }
 }

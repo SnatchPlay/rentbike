@@ -13,93 +13,106 @@ namespace User
         {
 			Command com=new Command(); int sr;
 			string street;
-			while (true)
+			if (com.placerep.Data.Count() == 0)
 			{
-				Console.WriteLine("         LET'S GO!         \n");
-				Console.WriteLine("Choose option:\n");
-				Console.WriteLine("1.Rent a bike\n");
-				Console.WriteLine("2.Return the bicycle\n");
-				Console.WriteLine("3.Call a technic\n" );
-				Console.WriteLine("4.Exit\n" );
-				char user;
-				user = Convert.ToChar(Console.ReadLine());
-				if (user == '1')
+				Console.WriteLine("Ooops no points to rent a bike");
+				Console.ReadLine();
+			}
+			else
+			{
+				while (true)
 				{
-					com.readcust();
-
-                    Console.WriteLine("Our points:\n");
-					com.streets();
-					Console.WriteLine("Choose a street:"); street=Console.ReadLine();
-					if (com.avalsom(street) == false)
-					{
-						Console.WriteLine("Choose another street.\n");
-					}
-					else
-					{
-						com.showjustaval(street);
-						Console.WriteLine("Choose the bike.\n");
-						Console.WriteLine("Type serial number:\n"); sr=Convert.ToInt32(Console.ReadLine());
-						com.rent(sr);
-					}
-				}
-
-				else if (user == '2')
-				{
-					Console.WriteLine("Where do you want to leave your bike?\n");
-					Console.WriteLine("Our points:\n");
-					com.streets();
-					Console.WriteLine("Choose a street:\n");street=Console.ReadLine();
-
-					if (com.Avalbystr(street) == true)
-					{
-						Console.WriteLine("Choose another street.");
-					}
-					else
-					{
-						Console.WriteLine("Please type serial number:"); sr = Convert.ToInt32(Console.ReadLine());
-						com.shownotavlbystr(street, sr);
-						com.returnb(sr);
-
-
-					}
-				}
-				
-				else if (user == '3')
-				{
-					string tech;int nr;
-					Console.WriteLine("Choose a tech and type a name.\n");
-					com.showtech();
-					tech = Console.ReadLine();
-					Console.WriteLine("Wait for a tech.\n");
-					Console.WriteLine("Available option:\n 1.Set a rating\n2.Make a report\n3.Main menu\n");
+					Console.WriteLine("         LET'S GO!         \n");
+					Console.WriteLine("Choose option:\n");
+					Console.WriteLine("1.Rent a bike\n");
+					Console.WriteLine("2.Return the bicycle\n");
+					Console.WriteLine("3.Call a technic\n");
+					Console.WriteLine("4.Exit\n");
+					char user;
 					user = Convert.ToChar(Console.ReadLine());
-					while (true)
+					if (user == '1')
 					{
-						if (user == '1')
+						com.readcust();
+
+						Console.WriteLine("Our points:\n");
+						com.streets();
+						Console.WriteLine("Choose a street:"); street = Console.ReadLine();
+						if (com.avalsom(street) == false)
 						{
-							Console.WriteLine("Type a new rating:\n");nr=Convert.ToInt32(Console.ReadLine());
-							com.setratetech(tech, nr);
-							break;
-						}
-						else if (user == '2')
-						{
-							Console.WriteLine("Thank you for a report\n");
-							com.repplus(tech);
-							break;
+							Console.WriteLine("Choose another street.\n");
 						}
 						else
 						{
-							Console.WriteLine("Wow.\n");
-							break;
+							for(int i = 0; i < com.placerep.Data.Count(); i++)
+							{
+                                Console.WriteLine (com.showjustaval(street,i));
+							}
+							
+							Console.WriteLine("Choose the bike.\n");
+							Console.WriteLine("Type serial number:\n");
+							sr = Convert.ToInt32(Console.ReadLine());
+							com.rent(sr);
 						}
 					}
-				}
-				else
-				{
-					break;
-				}
+
+					else if (user == '2')
+					{
+						Console.WriteLine("Where do you want to leave your bike?\n");
+						Console.WriteLine("Our points:\n");
+						com.streets();
+						Console.WriteLine("Choose a street:\n"); street = Console.ReadLine();
+
+						if (com.Avalbystr(street) == true)
+						{
+							Console.WriteLine("Choose another street.");
+						}
+						else
+						{
+							Console.WriteLine("Please type serial number:"); sr = Convert.ToInt32(Console.ReadLine());
+							com.shownotavlbystr(street, sr);
+							com.returnb(sr);
+
+
+						}
+					}
+
+					else if (user == '3')
+					{
+						string tech; int nr;
+						Console.WriteLine("Choose a tech and type a name.\n");
+						com.showtech();
+						tech = Console.ReadLine();
+						Console.WriteLine("Wait for a tech.\n");
+						Console.WriteLine("Available option:\n 1.Set a rating\n2.Make a report\n3.Main menu\n");
+						user = Convert.ToChar(Console.ReadLine());
+						while (true)
+						{
+							if (user == '1')
+							{
+								Console.WriteLine("Type a new rating:\n"); nr = Convert.ToInt32(Console.ReadLine());
+								com.setratetech(tech, nr);
+								break;
+							}
+							else if (user == '2')
+							{
+								Console.WriteLine("Thank you for a report\n");
+								com.repplus(tech);
+								break;
+							}
+							else
+							{
+								Console.WriteLine("Wow.\n");
+								break;
+							}
+						}
+					}
+					else
+					{
+						break;
+					}
 
 				}
+			}
 			}
 		}
     }

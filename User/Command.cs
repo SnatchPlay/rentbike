@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NP_1.RepInterface;
 using NP_1;
+using NP_1.FileRep;
+using NP_1.Factories;
+using System.Configuration;
+using System.IO;
 
 namespace User
 {
     public class Command
     {
-        public IRepository<Technic> techRepositorty = new TechRep();
-        public IRepository<Call> callRepository = new CallRep();
-        public IRepository<Place> placerep = new PlaceRep();
-        public IRepository<Place> difstreet = new PlaceRep();
+        public ICallRep callRepository = FactoryProvider.GetFactory().GetCallRep();
+        public ITechRep techRepositorty = FactoryProvider.GetFactory().GetTechRep();
+        public IPlaceRep placerep = FactoryProvider.GetFactory().GetPlaceRep();
+
+        //public IRepository<Place> difstreet = new PlaceRep();
         List<Customer> custcommand = new List<Customer>();
         public bool Avalbystr(string street)
         {//all zaynato= true
@@ -20,7 +26,7 @@ namespace User
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
 
-                if ((street == placerep.Data[i].getstreet()) && ((placerep.Data[i].avall()) == true))
+                if ((street == placerep.Data[i].street) && ((placerep.Data[i].available) == true))
                 {
                     k++;
 
@@ -42,7 +48,7 @@ namespace User
         {
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                if ((street1 == placerep.Data[i].getstreet()) && ((placerep.Data[i].avall()) == true))
+                if ((street1 == placerep.Data[i].street) && ((placerep.Data[i].available) == true))
                 {
                     return true;//ye bike
                 }
@@ -58,7 +64,7 @@ namespace User
 
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                string tempstr = placerep.Data[i].getstreet();
+                string tempstr = placerep.Data[i].street;
                 if (difstreet.Contains(tempstr)) { continue; }
                 else
                 {
@@ -77,7 +83,7 @@ namespace User
         {
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                if (streeet == ((placerep.Data[i]).getstreet()))
+                if (streeet == ((placerep.Data[i]).street))
                 {
 
                     (placerep.Data[i]).Writejustbike();
@@ -90,13 +96,25 @@ namespace User
         }
         public void rent(int s)
         {
+            string filePath = "D:/Projects/NP_1/NP_1/TXT/cus.txt";
+            string newline;
+            var factoryType = ConfigurationManager.AppSettings["factoryType"];
+            StreamWriter sw = new StreamWriter(filePath, true);
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                if (s == (placerep.Data[i]).sr())
+                if (s == (placerep.Data[i]).serialnumb)
                 {
-                    placerep.Data[i].seta(false);
+                    placerep.Data[i].available=false;
                 }
             }
+            if (factoryType == "file")
+            {
+                newline = s + " " + custcommand[custcommand.Count() - 1].ToString();
+                
+                sw.WriteLine(newline);
+                sw.Close();
+
+            };
         }
 
         public void shownotavlbystr(string stret, int sr)
@@ -105,14 +123,14 @@ namespace User
 
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                if ((stret == ((placerep.Data[i]).getstreet())) && (((placerep.Data[i]).avall()) == false))
+                if ((stret == ((placerep.Data[i]).street)) && (((placerep.Data[i]).available) == false))
                 {
                     if (f > 1)
                     {
                         break;
                     }
-                   (placerep.Data[i]).seta(true);
-                    (placerep.Data[i]).setsr(sr);
+                   (placerep.Data[i]).available=true;
+                    (placerep.Data[i]).serialnumb=sr;
                     f++;
                 }
             }
@@ -120,17 +138,66 @@ namespace User
 
         public void returnb(int ar)
         {
+            string filePath = "D:/Projects/NP_1/NP_1/TXT/cus.txt";
+            string line, newline;
+            List<int> srn = new  List<int>();
+            List<string> filelines = new List<string>();
             for (int i = 0; i < placerep.Data.Count(); i++)
             {
-                if (placerep.Data[i].sr() == ar)
+                if (placerep.Data[i].serialnumb == ar)
                 {
-                    placerep.Data[i].seta(true);
+                    placerep.Data[i].available=true;
                 }
             }
-            custcommand.RemoveAt(0);
+            
+            var factoryType = ConfigurationManager.AppSettings["factoryType"];
+            
+            
+            if (factoryType == "file")
+            {
+                StreamReader sr = new StreamReader(filePath);
+                while ((line = sr.ReadLine()) != null)
+                {
+                    filelines.Add(line);
+                }
+                sr.Close();
+                custcommand.Clear();
+                foreach (string line1 in filelines)
+                {
+                    string[] tmp = line1.Split();
+                    int sern = Convert.ToInt32(tmp[0]);
+                    string Name = tmp[1];
+                    string SurName = tmp[2];
+                    int number = Convert.ToInt32(tmp[3]);
+                    Customer cs = new Customer(Name, SurName, number);
+                    custcommand.Add(cs);
+                    srn.Add(sern);
+                }
+                for (int i = 0; i < custcommand.Count(); i++)
+                {
+                    if (srn[i] == ar)
+                    {
+                        custcommand.RemoveAt(i);
+                        srn.RemoveAt(i);
+                    }
+                }
+                StreamWriter sw = new StreamWriter(filePath, false);
+                for (int l = 0; l < custcommand.Count(); l++)
+                {
+                    newline = srn[l] + " " + custcommand[l].ToString();
+                    sw.WriteLine(newline);
+                    
+                }
+                sw.Close();
+
+            }
+            else {
+                custcommand.RemoveAt(0);
+            };
         }
         public void readcust()
         {
+            
             Customer css;
             string name, surname; int phone;
             Console.WriteLine("Please type info about you:\n");
@@ -139,6 +206,7 @@ namespace User
             Console.WriteLine("Phone:"); phone = Convert.ToInt32(Console.ReadLine());
             css = new Customer(name, surname, phone);
             custcommand.Add(css);
+
 
         }
         ////////////////////////////////////////////////////////////////////////
@@ -153,7 +221,7 @@ namespace User
             {
                 if (name == ((techRepositorty.Data[i]).getName()))
                 {
-                    (techRepositorty.Data[i]).setrate(newrate);
+                    (techRepositorty.Data[i]).rate=newrate;
 
                 }
             }
@@ -165,7 +233,7 @@ namespace User
             {
                 if (name == ((techRepositorty.Data[i]).getName()))
                 {
-                    (techRepositorty.Data[i]).setcr(((techRepositorty.Data[i]).getcr() + 1));
+                    (techRepositorty.Data[i]).cr=(((techRepositorty.Data[i]).cr + 1));
 
                 }
             }
@@ -196,23 +264,23 @@ namespace User
             {
                 if (name == ((callRepository.Data[i]).getName()))
                 {
-                    (callRepository.Data[i]).setcall(((callRepository.Data[i]).getcalls() + 1));
+                    (callRepository.Data[i]).calls=(((callRepository.Data[i]).calls + 1));
 
                 }
             }
         }
 
 
-        public void showjustaval(string street2)
+        public string showjustaval(string street2,int i)
         {
-            for (int i = 0; i < placerep.Data.Count(); i++)
-            {
-                if ((street2 == placerep.Data[i].getstreet()) && ((placerep.Data[i].avall()) == true))
+            string str = "";
+            
+                if (( placerep.Data[i].street==street2 ) && ((placerep.Data[i].available) == true))
                 {
-                    placerep.Data[i].Writejustbike();
+                    str=placerep.Data[i].Writejustbike();
 
                 }
-            }
+            return str;
 
         }
 
